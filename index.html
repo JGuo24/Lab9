@@ -54,12 +54,12 @@
     <button>Console Trace</button>
     <button>Trigger a Global Error</button>
   </section>
-  
+
   <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
     window.TrackJS && TrackJS.install({ 
-      token: "b36d8b627c4f4ad88164e4171b45b0f4"
-      // for more configuration options, see https://docs.trackjs.com
+      token: "b36d8b627c4f4ad88164e4171b45b0f4",
+      application: "lab9"
     });
   </script>
                           
@@ -170,6 +170,7 @@
       console.error("Error was found");
       return true;
     }
+    TrackJS.track('Testing TrackJS!');
   </script>
 </body>
 </html>
