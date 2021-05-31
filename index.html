@@ -54,7 +54,15 @@
     <button>Console Trace</button>
     <button>Trigger a Global Error</button>
   </section>
-
+  
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "b36d8b627c4f4ad88164e4171b45b0f4"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                          
   <script>
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
@@ -62,11 +70,106 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      //output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     // TODO - Make buttons functional
+    errorBtns[0].addEventListener('click', () =>{
+      console.log('Console Log');
+    });
+
+    errorBtns[1].addEventListener('click', () =>{
+      console.error('Console Error');
+    });
+
+    errorBtns[2].addEventListener('click', () =>{
+      console.dir(document.location);
+    });
+
+    errorBtns[3].addEventListener('click', () =>{
+      console.dirxml(document.querySelector('legend'));
+    });
+
+    errorBtns[4].addEventListener('click', () =>{
+      console.group("group start");
+    });
+
+    errorBtns[5].addEventListener('click', () =>{
+      console.log("group end");
+    });
+
+    errorBtns[6].addEventListener('click', () =>{
+      console.table(['hi','this','is','a','table']);
+    });
+
+    errorBtns[7].addEventListener('click', () =>{
+      console.log("Timer Started");
+      console.time("timer on");
+    });
+
+    errorBtns[8].addEventListener('click', () =>{
+      console.log("Timer ended");
+      console.timeEnd("timer on");
+    });
+
+    errorBtns[9].addEventListener('click', () =>{
+      function foo() {
+        function bar() {
+          console.trace();
+        }
+        bar();
+      }
+      foo();
+    });
+
+
+    errorBtns[10].addEventListener('click', () =>{
+      try{
+        throw new Error('Throwing global event error');
+      }
+      catch(err)
+      {
+        console.log(err);
+      }
+    });
+
+    //trying out try/catch/finally
+    try{
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      let operator = document.querySelector('#operator').value;
+      output.innerHTML=eval(`${firstNum} ${operator} ${secondNum}`);
+    }
+    catch(err){
+      console.log('cannot calculate: field in not filled');
+    }
+    finally{
+      document.querySelector("input").innerHTML = "";
+      console.log("done");
+    }
+
+    class FieldError extends Error{
+      constructor(message) {
+        super(message);
+        this.name = "FieldError";
+      }
+    }
+
+    //throw
+    try{
+      throw new FieldError("There is a field error.");
+    }
+    catch{
+      console.log("Field Error");
+    }
+
+    //global error handler
+    window.onerror = function (message) {
+      console.log('Error');
+      console.error("Error was found");
+      return true;
+    }
   </script>
 </body>
 </html>
